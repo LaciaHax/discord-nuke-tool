@@ -5,12 +5,14 @@ from modules.join_mod import join_mod
 from modules.leave_mod import leave_mod
 from modules.spam_mod import spam_mod
 from modules.token_mod import token_mod
+from modules.emoji_mod import emoji_mod
 
 lists = [
     join_mod,
     leave_mod,
     spam_mod,
     token_mod,
+    emoji_mod,
 ]
 
 while True:

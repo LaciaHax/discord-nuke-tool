@@ -9,7 +9,7 @@ options = """
                                             -----------------------------
 
                                             1. Joiner 2. Leaver 3. Spammer
-                                            4. Tokenchecker
+                                            4. Tokenchecker 5. Emoji spmam
 """
 
 def show():

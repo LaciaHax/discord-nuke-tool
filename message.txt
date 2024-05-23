@@ -1,1 +1,1 @@
-test {randmen} {randmen} {randjp-10} {rand-10}
+@everyone {rand-19} {ghost} {randmen} {randmen} {randjp-10}
