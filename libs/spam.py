@@ -9,17 +9,26 @@ import json
 from libs.fetch import fetch_user_ids
 
 def is_channel_valid(token, channel_id):
-    headers = {
-        "accept": "*/*",
-        "authorization": token,
-    }
-    response = requests.post(f"https://discord.com/api/v10/channels/{channel_id}/typing", headers=headers)
-    print(f"{channel_id} trying ...")
-    if response.status_code == 204:
-        print(f"[+] Success {channel_id}")
-    else:
-        print(f"[-] {response.status_code} faild {channel_id}")
-    return response.status_code == 204
+    while True:
+        headers = {
+            "accept": "*/*",
+            "authorization": token,
+        }   
+        response = requests.post(f"https://discord.com/api/v10/channels/{channel_id}/typing", headers=headers)
+        print(f"{channel_id} trying ...")
+        if response.status_code == 204:
+            print(f"[+] Success {channel_id}")
+            return response.status_code == 204
+        elif response.status_code == 429:
+            print(f"[!] ratelimited | {datetime.datetime.now()}")
+            response_json = json.loads(response.text)
+            retry_after = float(response_json['retry_after'])
+            sleep_time = retry_after + 5
+            print(f"[!] Sleeping for {sleep_time} seconds")
+            time.sleep(sleep_time)
+        else:
+            print(f"[-] {response.status_code} faild {channel_id}")
+            return response.status_code == 204
 
 def get_valid_channels(server_id, token):
     headers = {
@@ -92,6 +101,7 @@ def send_messages(tokens, server_id):
                 for channel in channels:
                     modified_message = re.sub(r"{rand-(\d+)}", lambda x: generate_random_string(int(x.group(1))), message)
                     modified_message = re.sub(r"{randjp-(\d+)}", lambda x: generate_random_hiragana(int(x.group(1))), modified_message)
+                    modified_message = modified_message.replace("{ghost}", "||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||||||||||")
                     while "{randmen}" in modified_message:
                         mention = f"<@{random.choice(user_ids)}>"
                         modified_message = modified_message.replace("{randmen}", mention, 1)
@@ -124,6 +134,7 @@ def send_messages(tokens, server_id):
             while True:
                 modified_message = re.sub(r"{rand-(\d+)}", lambda x: generate_random_string(int(x.group(1))), message)
                 modified_message = re.sub(r"{randjp-(\d+)}", lambda x: generate_random_hiragana(int(x.group(1))), modified_message)
+                modified_message = modified_message.replace("{ghost}", "||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||||||||||")
                 while "{randmen}" in modified_message:
                     mention = f"<@{random.choice(user_ids)}>"
                     modified_message = modified_message.replace("{randmen}", mention, 1)
