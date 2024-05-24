@@ -59,6 +59,7 @@ def joiner(token, invite):
             response_text = result.text
 
             if status_code == 400:
+                print(f"[*] need captcha {token}")
                 while True:
                     try:
                         result = session.post(f"https://discord.com/api/v9/invites/{clean_code}", json={'session_id': rand_str(32)})

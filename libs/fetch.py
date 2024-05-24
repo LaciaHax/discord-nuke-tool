@@ -46,11 +46,6 @@ def fetch_user_ids(token, guild, channel):
 
     guilds = json_data['d']['guilds']
 
-    for guild in guilds:
-        if guild["id"] == '956638414424387615':
-            for member in guild["members"]:
-                print(member["user"]["id"])
-
     ws.send(
         json.dumps(
             {
@@ -67,9 +62,12 @@ def fetch_user_ids(token, guild, channel):
     json_data = json.loads(received_data)
 
     user_ids = []
-    for item in json_data['d']['ops'][0]['items']:
-        if 'member' in item:
-            user_id = item['member']['user']['id']
-            user_ids.append(user_id)
+    if 'ops' in json_data['d']:
+        for item in json_data['d']['ops']:
+            if 'items' in item:
+                for member in item['items']:
+                    if 'member' in member:
+                        user_id = member['member']['user']['id']
+                        user_ids.append(user_id)
 
     return user_ids

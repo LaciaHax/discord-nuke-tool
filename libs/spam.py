@@ -89,7 +89,18 @@ def send_messages(tokens, server_id):
     channel_id = input("チャンネルIDを入力してください > ")
     
     print(f"[INFO] fetch members....")
+    attempt = 1
     user_ids = fetch_user_ids(tokens[0], server_id, channel_id)
+
+    while not user_ids and attempt <= 10:
+        print(f"[INFO] ユーザーIDが取得できませんでした。再試行します... (試行回数: {attempt})")
+        time.sleep(5)
+        user_ids = fetch_user_ids(tokens[0], server_id, channel_id)
+        attempt += 1
+
+    if not user_ids:
+        print("[INFO] ユーザーIDを取得できませんでした。中断します。")
+        return
 
     message = read_message_from_file("message.txt")
     if multi_channel_mode.lower() == 'y':
