@@ -8,5 +8,8 @@ message.txt options
 4. {randmen} <- random mention
 
 2024/5/23:
-[+] release!! 🎉🥳
-[+] add emoji_spam
+1.[+] release!! 🎉🥳
+2.[+] add emoji_spam
+
+2024/5/24:
+[+] add captcha solver
