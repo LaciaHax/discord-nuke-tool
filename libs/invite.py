@@ -48,7 +48,7 @@ def joiner(token, invite):
         else:
             invites = invite
 
-        session.headers.update({"Authorization": t})
+        session.headers.update({"Authorization": token})
         site = session.get("https://discord.com")
         session.cookies = site.cookies
 
@@ -93,7 +93,7 @@ def joiner(token, invite):
                             break
                     except Exception as e:
                         print(f"Error while solving captcha: {e}")
-            elif status_code in [200, 204]:
+            elif status_code == 200:
                 status_message = "success :D"
             elif status_code == 429:
                 print(f"[!] ratelimited | {datetime.datetime.now()}")

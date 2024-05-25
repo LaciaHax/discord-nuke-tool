@@ -6,7 +6,7 @@ import random
 import string
 import re
 import json
-from libs.fetch import fetch_user_ids
+from libs.fetch import get_members
 
 def is_channel_valid(token, channel_id):
     while True:
@@ -145,7 +145,7 @@ def send_messages(tokens, server_id):
     channel_id = input("チャンネルIDを入力してください > ")
     
     print(f"[INFO] fetch members....")
-    user_ids = fetch_user_ids(tokens[0], server_id, channel_id)
+    user_ids = get_members(tokens[0], server_id, channel_id)
 
     message = read_message_from_file("emoji_message.txt")
     if multi_channel_mode.lower() == 'y':

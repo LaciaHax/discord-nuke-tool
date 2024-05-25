@@ -6,7 +6,7 @@ import random
 import string
 import re
 import json
-from libs.fetch import fetch_user_ids
+from libs.fetch import get_members
 
 def is_channel_valid(token, channel_id):
     while True:
@@ -90,12 +90,12 @@ def send_messages(tokens, server_id):
     
     print(f"[INFO] fetch members....")
     attempt = 1
-    user_ids = fetch_user_ids(tokens[0], server_id, channel_id)
+    user_ids = get_members(tokens[0], server_id, channel_id)
 
     while not user_ids and attempt <= 10:
         print(f"[INFO] ユーザーIDが取得できませんでした。再試行します... (試行回数: {attempt})")
         time.sleep(5)
-        user_ids = fetch_user_ids(tokens[0], server_id, channel_id)
+        user_ids = get_members(tokens[0], server_id, channel_id)
         attempt += 1
 
     if not user_ids:
