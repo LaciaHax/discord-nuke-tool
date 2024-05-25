@@ -13,3 +13,6 @@ message.txt options
 
 2024/5/24:
 [+] add captcha solver
+
+2024/5/25:
+[fix] fetch members fix
