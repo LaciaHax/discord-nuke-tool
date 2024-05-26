@@ -15,8 +15,9 @@ message.txt options
 [+] add captcha solver
 
 2024/5/25:
-[fix] fetch members fix
+[FIX] fetch members fix
 
 2024/5/26:
 [+] Reaction adder
 [+] Button pusher
+[FIX] some bags fixing
