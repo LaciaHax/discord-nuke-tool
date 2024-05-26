@@ -3,6 +3,12 @@ import random
 import time
 import datetime
 import threading
+from colorama import Fore
+
+GREEN = Fore.GREEN
+RED = Fore.RED
+BLUE = Fore.BLUE
+YELLOW = Fore.YELLOW
 
 def add_emoji(token, channel, message, emoji):
     headers = {
@@ -103,7 +109,7 @@ def react_emoji(tokens):
                     else:
                         emojis.append(f"{emoji_name}:{emoji_id}")
                 else:
-                    print("cant find any reaction in that message :(")
+                    print(f"{RED}[-] cant find any reaction in that message :(")
                 
     for i, emoji in enumerate(emojis, start=1):
         print(f"{i} : {emoji}")
@@ -114,13 +120,13 @@ def react_emoji(tokens):
     def add_react(token):
         while True:
             response = add_emoji(token, channel_id, message_id, selected)
-            if response.status_code in [200, 204]:
-                print("[+] Success")
+            if response.status_code == 204:
+                print(f"{GREEN}[+] Success")
                 break
             elif response.status_code == 429:
-                print(f"[!] ratelimited | {datetime.datetime.now()}")
+                print(f"{YELLOW}[!] ratelimited | {datetime.datetime.now()}")
                 retry_after = int(response.headers.get('retry-after', 5)) + 5
-                print(f"[!] Sleeping for {retry_after} seconds")
+                print(f"{YELLOW}[!] Sleeping for {retry_after} seconds")
                 time.sleep(retry_after)
     threads = []
     for t in tokens:

@@ -1,4 +1,10 @@
 import requests
+from colorama import Fore
+
+GREEN = Fore.GREEN
+RED = Fore.RED
+BLUE = Fore.BLUE
+YELLOW = Fore.YELLOW
 
 def leave_server(tokens, id):
     if not isinstance(tokens, list):
@@ -18,7 +24,7 @@ def leave_server(tokens, id):
         response = requests.delete(url, headers=headers, data=payload)
         
         if response.status_code == 204:
-            print(f"退出しました。 {id}  {token}.")
+            print(f"{GREEN}[+] Leaved {id}  {token[-12:]}.")
         else:
-            print(f"失敗しました。 {id}  {token} {response.status_code}")
+            print(f"{RED}[-] Failed to leave {id}  {token[-12:]} {response.status_code}")
             print(response.text)

@@ -7,6 +7,12 @@ import string
 import re
 import json
 from libs.fetch import get_members
+from colorama import Fore
+
+GREEN = Fore.GREEN
+RED = Fore.RED
+BLUE = Fore.BLUE
+YELLOW = Fore.YELLOW
 
 def is_channel_valid(token, channel_id):
     while True:
@@ -17,17 +23,17 @@ def is_channel_valid(token, channel_id):
         response = requests.post(f"https://discord.com/api/v10/channels/{channel_id}/typing", headers=headers)
         print(f"{channel_id} trying ...")
         if response.status_code == 204:
-            print(f"[+] Success {channel_id}")
+            print(f"{GREEN}[+] Success {channel_id}")
             return response.status_code == 204
         elif response.status_code == 429:
-            print(f"[!] ratelimited | {datetime.datetime.now()}")
+            print(f"{YELLOW}[!] ratelimited | {datetime.datetime.now()}")
             response_json = json.loads(response.text)
             retry_after = float(response_json['retry_after'])
             sleep_time = retry_after + 5
-            print(f"[!] Sleeping for {sleep_time} seconds")
+            print(f"{YELLOW}[!] Sleeping for {sleep_time} seconds")
             time.sleep(sleep_time)
         else:
-            print(f"[-] {response.status_code} faild {channel_id}")
+            print(f"{RED}[-] {response.status_code} faild {channel_id}")
             return response.status_code == 204
 
 def get_valid_channels(server_id, token):
@@ -38,10 +44,10 @@ def get_valid_channels(server_id, token):
     response = requests.get(f"https://discord.com/api/v10/guilds/{server_id}/channels", headers=headers)
     if response.status_code == 200:
         channels = [channel["id"] for channel in response.json() if is_channel_valid(token, channel["id"])]
-        print(f"[INFO] channels | {channels}")
+        print(f"{BLUE}[INFO] channels | {channels}")
         return channels
     else:
-        print("[-] Failed to get channel list.")
+        print(f"{RED}[-] Failed to get channel list.")
         return []
 
 def generate_random_string(length):
@@ -144,12 +150,12 @@ def send_messages(tokens, server_id):
     
     channel_id = input("チャンネルIDを入力してください > ")
     
-    print(f"[INFO] fetch members....")
+    print(f"{BLUE}[INFO] fetch members....")
     user_ids = get_members(tokens[0], server_id, channel_id)
 
     message = read_message_from_file("emoji_message.txt")
     if multi_channel_mode.lower() == 'y':
-        print("[INFO] get_channels....")
+        print(f"{BLUE}[INFO] get_channels....")
         channels = get_valid_channels(server_id, tokens[0])
 
         def multi_mode(token):
@@ -164,17 +170,17 @@ def send_messages(tokens, server_id):
                     res = send_message(token, channel, modified_message)
                     status_code = res.status_code
                     if status_code == 429:
-                        print(f"[!] ratelimited | {datetime.datetime.now()}")
+                        print(f"{YELLOW}[!] ratelimited | {datetime.datetime.now()}")
                         response_json = json.loads(res.text)
                         retry_after = float(response_json['retry_after'])
                         sleep_time = retry_after + 5
-                        print(f"[!] Sleeping for {sleep_time} seconds")
+                        print(f"{YELLOW}[!] Sleeping for {sleep_time} seconds")
                         time.sleep(sleep_time)
-                    elif status_code == 200 or 204:
-                        print(f"[+] Success send {token} {channel}")
+                    elif status_code == 200:
+                        print(f"{GREEN}[+] Success send {token[-12:]} {channel}")
                         time.sleep(delay)
                     else:
-                        print(f"[-] Failed send {token} {channel}")
+                        print(f"{RED}[-] Failed send {token[-12:]} {channel}")
 
         threads = []
         for token in tokens:
@@ -197,17 +203,17 @@ def send_messages(tokens, server_id):
                 res = send_message(token, channel_id, modified_message)
                 status_code = res.status_code
                 if status_code == 429:
-                    print(f"[!] ratelimited | {datetime.datetime.now()}")
+                    print(f"{YELLOW}[!] ratelimited | {datetime.datetime.now()}")
                     response_json = json.loads(res.text)
                     retry_after = float(response_json['retry_after'])
                     sleep_time = retry_after + 5
-                    print(f"[!] Sleeping for {sleep_time} seconds")
+                    print(f"{YELLOW}[!] Sleeping for {sleep_time} seconds")
                     time.sleep(sleep_time)
-                elif status_code == 200 or 204:
-                    print(f"[+] Success send {token} {channel_id}")
+                elif status_code == 200:
+                    print(f"{GREEN}[+] Success send {token[-12:]} {channel_id}")
                     time.sleep(delay)
                 else:
-                    print(f"[-] Failed send {token} {channel_id}")
+                    print(f"{RED}[-] Failed send {token[-12:]} {channel_id}")
 
         threads = []
         for token in tokens:

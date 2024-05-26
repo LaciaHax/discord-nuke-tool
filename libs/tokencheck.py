@@ -1,19 +1,30 @@
 import requests
+import datetime
+import time
+from colorama import Fore
+
+GREEN = Fore.GREEN
+RED = Fore.RED
+BLUE = Fore.BLUE
+YELLOW = Fore.YELLOW
 
 def check_token(token):
-    headers = {
-        "Authorization": token
-    }
-    response = requests.get("https://discord.com/api/v9/users/@me", headers=headers)
-    if response.status_code == 200 or 204:
-        print(f"[+] Token {token} is valid!")
-        return True
-    elif response.status_code == 429:
-        print(f"[!] Token {token} rate limited. Ignoring...")
-        return True
-    else:
-        print(f"[-] Token {token} is invalid!")
-        return False
+    while True:
+        headers = {
+            "Authorization": token
+        }
+        response = requests.get("https://discord.com/api/v9/users/@me", headers=headers)
+        if response.status_code == 200:
+            print(f"{GREEN}[+] Token {token} is valid!")
+            return True
+        elif response.status_code == 429:
+            print(f"{YELLOW}[!] ratelimited | {datetime.datetime.now()}")
+            retry_after = int(response.headers.get('retry-after', 5)) + 5
+            print(f"{YELLOW}[!] Sleeping for {retry_after} seconds")
+            time.sleep(retry_after)
+        else:
+            print(f"{RED}[-] Token {token} is invalid!")
+            return False
 
 def remove_newline(token):
     return token.strip()
@@ -38,4 +49,4 @@ def main():
         for token in dead_tokens:
             file.write(token + "\n")
 
-    print("Dead tokens written to dead_token.txt")
+    print(f"{BLUE}[INFO] Dead tokens written to dead_token.txt")

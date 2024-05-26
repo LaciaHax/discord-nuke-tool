@@ -3,6 +3,12 @@ import time
 import base64
 from PIL import Image
 from io import BytesIO
+from colorama import Fore
+
+GREEN = Fore.GREEN
+RED = Fore.RED
+BLUE = Fore.BLUE
+YELLOW = Fore.YELLOW
 
 class hCaptchaToken:
     def __init__(self, apikey_file):
@@ -10,8 +16,8 @@ class hCaptchaToken:
         self.token_api = "https://token.nocaptchaai.com/token"
         self.headers = {"Content-Type": "application/json",
                         "apikey": None}
-        self.token = None  # Initialize token attribute
-        self.solved = False  # Initialize solved attribute
+        self.token = None
+        self.solved = False
 
     def read_api_key(self):
         with open(self.apikey_file, "r") as file:
@@ -24,8 +30,8 @@ class hCaptchaToken:
         response_json = response.json()
         startTime = time.time()
 
-        print("task status: ", response_json)
-        print("waiting 7sec for response...")
+        print(f"{BLUE}[INFO] task status: ", response_json)
+        print(f"{BLUE}[INFO] waiting 7sec for response...")
         time.sleep(7)
 
         while True:
@@ -34,7 +40,7 @@ class hCaptchaToken:
             if sts["status"] == "processed" or sts["status"] == "failed":
                 print(
                     f'time since request:- {int(time.time() - startTime)} seconds')
-                print(f'status: {sts["status"]}\n{sts["token"]}')
+                print(f'{BLUE}[INFO] status: {sts["status"]}\n{sts["token"]}')
                 self.token = sts["token"]
                 if sts["status"] == "processed":
                     with open("test.txt", "w") as file:
@@ -42,8 +48,7 @@ class hCaptchaToken:
                     self.solved = True
                 break
 
-            print(f"{sts}")
-            print("status: ", sts["status"])
+            print(f"{BLUE}[INFO] status: ", sts["status"])
             time.sleep(2)
 
 class OCR:

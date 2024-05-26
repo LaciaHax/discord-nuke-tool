@@ -2,6 +2,12 @@ import uuid
 from tls_client import Session
 import random
 import threading
+from colorama import Fore
+
+GREEN = Fore.GREEN
+RED = Fore.RED
+BLUE = Fore.BLUE
+YELLOW = Fore.YELLOW
 
 def button_bypass(message: str, tokens: list, bot_id: str):
     try:
@@ -122,11 +128,11 @@ def button_bypass(message: str, tokens: list, bot_id: str):
                 )
                 match response.status_code:
                     case 204:
-                        print("[+] Pressed")
+                        print(f"{GREEN}[+] Pressed")
                     case _:
-                        print("[-] Failed")
+                        print(f"{RED}[-] Failed")
             except Exception as e:
-                print("[-] ERROR")
+                print(f"{RED}[-] ERROR")
 
         threads = []
         for t in tokens:

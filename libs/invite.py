@@ -5,6 +5,12 @@ import time
 import datetime
 from tls_client import Session
 from libs.solve import hCaptchaToken, OCR
+from colorama import Fore
+
+GREEN = Fore.GREEN
+RED = Fore.RED
+BLUE = Fore.BLUE
+YELLOW = Fore.YELLOW
 
 def rand_str(length):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
@@ -58,20 +64,20 @@ def joiner(token, invite):
             response_text = result.text
 
             if status_code == 200:
-                status_message = "success :D"
+                status_message = f"{GREEN}[+] success :D"
                 response_json = result.json()
                 guild = response_json.get('guild_id', None)
                 welcome_screen(token, guild)
             elif status_code == 400:
-                print(f"[*] need captcha {token}")
+                print(f"{YELLOW}[!] need captcha {token[-12:]}")
                 while True:
                     try:
                         result = session.post(f"https://discord.com/api/v9/invites/{clean_code}", json={'session_id': rand_str(32)})
                         status_code = result.status_code
                         if status_code == 429:
-                            print(f"[!] ratelimited | {datetime.datetime.now()}")
+                            print(f"{YELLOW}[!] ratelimited | {datetime.datetime.now()}")
                             retry_after = int(result.headers.get('retry-after', 5)) + 5
-                            print(f"[!] Sleeping for {retry_after} seconds")
+                            print(f"{YELLOW}[!] Sleeping for {retry_after} seconds")
                             time.sleep(retry_after)
                             continue
                         error_json = result.json()
@@ -93,25 +99,25 @@ def joiner(token, invite):
                             result = session.post(f"https://discord.com/api/v9/invites/{clean_code}", json={'session_id': rand_str(32)})
                             status_code = result.status_code
                             response_text = result.text
-                            status_message = f"[+] solved {token[-12:]}"
-                            status_message = "success :D"
+                            status_message = f"{GREEN}[+] solved {token[-12:]}"
+                            status_message = f"{GREEN}[+] success :D"
                             response_json = result.json()
                             guild = response_json.get('guild_id', None)
                             welcome_screen(token, guild)
                             break
                     except Exception as e:
-                        print(f"Error while solving captcha: {e}")
+                        print(f"{RED}[-] Error while solving captcha: {e}")
             elif status_code == 429:
-                print(f"[!] ratelimited | {datetime.datetime.now()}")
+                print(f"{YELLOW}[!] ratelimited | {datetime.datetime.now()}")
                 retry_after = int(result.headers.get('retry-after', 5)) + 5
-                print(f"[!] Sleeping for {retry_after} seconds")
+                print(f"{YELLOW}[!] Sleeping for {retry_after} seconds")
                 time.sleep(retry_after)
                 join_with_token(token)
                 return
             elif status_code == 500:
-                status_message = "token is dead :P"
+                status_message = f"{RED}[-] token is dead :P"
             else:
-                status_message = f"Unexpected status code: {status_code}"
+                status_message = f"{RED}[-] Unexpected status code: {status_code}"
 
             print(f"{status_message}\n{response_text}")
         
@@ -168,11 +174,11 @@ def joiner(token, invite):
                         }
                         resp = tls.post(f"https://discord.com/api/v10/guilds/{guild}/onboarding-responses", headers, data=json_data)
                         if resp == 200:
-                            print(f"[+] Success bypass welcome-screen {token[-12:]}")
+                            print(f"{GREEN}[+] Success bypass welcome-screen {token[-12:]}")
                         else:
-                            print(f"[-] Failed to bypass welcome-screen {token[-12:]}")
+                            print(f"{RED}[-] Failed to bypass welcome-screen {token[-12:]}")
                     else:
-                        print(f"[+] no welcome-screen in this guild")
+                        print(f"{GREEN}[+] no welcome-screen in this guild")
 
     if isinstance(token, str):
         tokens = [token]

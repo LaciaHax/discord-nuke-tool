@@ -1,3 +1,4 @@
+from colorama import Fore
 options = """
                                              _                   _
                                             | |                 (_)
@@ -14,4 +15,4 @@ options = """
 """
 
 def show():
-    print(options)
+    print(f"{Fore.WHITE}{options}")
