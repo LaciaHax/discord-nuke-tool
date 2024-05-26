@@ -16,3 +16,7 @@ message.txt options
 
 2024/5/25:
 [fix] fetch members fix
+
+2024/5/26:
+[+] Reaction adder
+[+] Button pusher
