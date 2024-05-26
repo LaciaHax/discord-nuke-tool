@@ -8,6 +8,7 @@ from modules.token_mod import token_mod
 from modules.emoji_mod import emoji_mod
 from modules.react_mod import add_emoji
 from modules.butotn_mod import button
+from modules.welcome_mod import welcome_mod
 from colorama import Fore
 
 lists = [
@@ -18,6 +19,7 @@ lists = [
     emoji_mod,
     add_emoji,
     button,
+    welcome_mod,
 ]
 
 while True:
