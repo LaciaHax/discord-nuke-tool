@@ -6,6 +6,8 @@ from modules.leave_mod import leave_mod
 from modules.spam_mod import spam_mod
 from modules.token_mod import token_mod
 from modules.emoji_mod import emoji_mod
+from modules.react_mod import add_emoji
+from modules.butotn_mod import button
 
 lists = [
     join_mod,
@@ -13,6 +15,8 @@ lists = [
     spam_mod,
     token_mod,
     emoji_mod,
+    add_emoji,
+    button,
 ]
 
 while True:
