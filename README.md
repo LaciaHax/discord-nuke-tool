@@ -37,3 +37,6 @@
 - [+] Reaction adder
 - [+] Button pusher
 - [FIX] some bags fixing
+
+2024/5/27:
+- [FIX] Some bugs are fixing
