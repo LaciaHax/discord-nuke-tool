@@ -7,7 +7,7 @@ from colorama import Fore
 
 GREEN = Fore.GREEN
 RED = Fore.RED
-BLUE = Fore.BLUE
+BLUE = Fore.LIGHTBLUE_EX
 YELLOW = Fore.YELLOW
 
 class hCaptchaToken:
@@ -39,7 +39,7 @@ class hCaptchaToken:
                 response_json["url"], headers=self.headers).json()
             if sts["status"] == "processed" or sts["status"] == "failed":
                 print(
-                    f'time since request:- {int(time.time() - startTime)} seconds')
+                    f'{BLUE}[INFO] Time since request:- {int(time.time() - startTime)} seconds')
                 print(f'{BLUE}[INFO] status: {sts["status"]}\n{sts["token"]}')
                 self.token = sts["token"]
                 if sts["status"] == "processed":

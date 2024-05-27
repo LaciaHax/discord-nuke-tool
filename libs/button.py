@@ -6,7 +6,7 @@ from colorama import Fore
 
 GREEN = Fore.GREEN
 RED = Fore.RED
-BLUE = Fore.BLUE
+BLUE = Fore.LIGHTBLUE_EX
 YELLOW = Fore.YELLOW
 
 def button_bypass(message: str, tokens: list, bot_id: str):

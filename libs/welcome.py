@@ -8,14 +8,13 @@ from colorama import Fore
 
 GREEN = Fore.GREEN
 RED = Fore.RED
-BLUE = Fore.BLUE
+BLUE = Fore.LIGHTBLUE_EX
 YELLOW = Fore.YELLOW
 
 def welcome_screen(token, guild):
     onboarding_responses_seen = {}
     onboarding_prompts_seen = {}
     onboarding_responses = []
-    in_guild = False
 
     headers = {
         'authority': 'discord.com',

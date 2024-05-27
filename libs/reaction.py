@@ -7,7 +7,7 @@ from colorama import Fore
 
 GREEN = Fore.GREEN
 RED = Fore.RED
-BLUE = Fore.BLUE
+BLUE = Fore.LIGHTBLUE_EX
 YELLOW = Fore.YELLOW
 
 def add_emoji(token, channel, message, emoji):

@@ -11,7 +11,7 @@ from colorama import Fore
 
 GREEN = Fore.GREEN
 RED = Fore.RED
-BLUE = Fore.BLUE
+BLUE = Fore.LIGHTBLUE_EX
 YELLOW = Fore.YELLOW
 
 def is_channel_valid(token, channel_id):
