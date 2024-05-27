@@ -63,7 +63,7 @@ def welcome_screen(token, guild):
                         "onboarding_responses_seen": onboarding_responses_seen,
                     }
                     resp = tls.post(f"https://discord.com/api/v10/guilds/{guild}/onboarding-responses", headers=headers, json=json_data)
-                    if resp == 200:
+                    if resp.status_code == 200:
                         print(f"{GREEN}[+] Success bypass welcome-screen {token[-12:]}")
                     else:
                         print(f"{RED}[-] Failed to bypass welcome-screen {token[-12:]}")
