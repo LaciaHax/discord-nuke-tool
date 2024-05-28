@@ -89,10 +89,13 @@ def send_message(token, channel_id, message):
 def send_messages(tokens, server_id):
     if not isinstance(tokens, list):
         tokens = [tokens]
+    met_dict = {token: 0 for token in tokens} 
     delay = float(input("送信間隔を入力してください（s) > "))
     multi_channel_mode = input("Multi channel modeを有効にしますか？(y/n) >  ")
     
     channel_id = input("チャンネルIDを入力してください > ")
+
+    wick_troll = input("Wick bypassをしますか？ (y/n)")
     
     print(f"{BLUE}[INFO] fetch members....")
     attempt = 1
@@ -114,16 +117,29 @@ def send_messages(tokens, server_id):
         channels = get_valid_channels(server_id, tokens[0])
 
         def multi_mode(token):
+            met = met_dict[token]
             while True:
                 for channel in channels:
                     modified_message = re.sub(r"{rand-(\d+)}", lambda x: generate_random_string(int(x.group(1))), message)
                     modified_message = re.sub(r"{randjp-(\d+)}", lambda x: generate_random_hiragana(int(x.group(1))), modified_message)
                     modified_message = modified_message.replace("{ghost}", "||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||||||||||")
-                    while "{randmen}" in modified_message:
-                        mention = f"<@{random.choice(user_ids)}>"
-                        modified_message = modified_message.replace("{randmen}", mention, 1)
+                    if wick_troll == "y":
+                        if met <= 3:
+                            met += 1                 
+                            while "{randmen}" in modified_message:
+                                mention = f"<@{random.choice(user_ids)}>"
+                                modified_message = modified_message.replace("{randmen}", mention, 1)
+                        else:
+                            met = 0
+                            while "{randmen}" in modified_message:
+                                modified_message = modified_message.replace("{randmen}", "", 1)
+                    else:
+                        while "{randmen}" in modified_message:
+                            mention = f"<@{random.choice(user_ids)}>"
+                            modified_message = modified_message.replace("{randmen}", mention, 1)
                     res = send_message(token, channel, modified_message)
                     status_code = res.status_code
+                    met_dict[token] = met
                     if status_code == 429:
                         print(f"{YELLOW}[!] ratelimited | {datetime.datetime.now()}")
                         response_json = json.loads(res.text)
@@ -148,15 +164,28 @@ def send_messages(tokens, server_id):
 
     elif multi_channel_mode.lower() == 'n':
         def single_mode(token):
+            met = met_dict[token]
             while True:
                 modified_message = re.sub(r"{rand-(\d+)}", lambda x: generate_random_string(int(x.group(1))), message)
                 modified_message = re.sub(r"{randjp-(\d+)}", lambda x: generate_random_hiragana(int(x.group(1))), modified_message)
                 modified_message = modified_message.replace("{ghost}", "||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||||||||||")
-                while "{randmen}" in modified_message:
-                    mention = f"<@{random.choice(user_ids)}>"
-                    modified_message = modified_message.replace("{randmen}", mention, 1)
+                if wick_troll == "y":
+                    if met <= 3:
+                        met += 1                 
+                        while "{randmen}" in modified_message:
+                            mention = f"<@{random.choice(user_ids)}>"
+                            modified_message = modified_message.replace("{randmen}", mention, 1)
+                    else:
+                        met = 0
+                        while "{randmen}" in modified_message:
+                            modified_message = modified_message.replace("{randmen}", "", 1)
+                else:
+                    while "{randmen}" in modified_message:
+                        mention = f"<@{random.choice(user_ids)}>"
+                        modified_message = modified_message.replace("{randmen}", mention, 1)
                 res = send_message(token, channel_id, modified_message)
                 status_code = res.status_code
+                met_dict[token] = met
                 if status_code == 429:
                     print(f"{YELLOW}[!] ratelimited | {datetime.datetime.now()}")
                     response_json = json.loads(res.text)
