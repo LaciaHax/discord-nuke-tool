@@ -41,3 +41,6 @@
 2024/5/27:
 - [FIX] Some bugs are fixing
 - [+] Chage are some visuals
+
+2024/5/28:
+- [+] wick-bypass
