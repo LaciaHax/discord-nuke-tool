@@ -44,3 +44,6 @@
 
 2024/5/28:
 - [+] wick-bypass
+
+2024/5/29:
+- [+] rule accepter
