@@ -12,7 +12,7 @@ options = """
                                             1. Joiner 2. Leaver 3. Spammer
                                             4. Tokenchecker 5. Emoji spmam
                                             6. Reaction Adder 7. Buttonpush
-                                            8. welcome-bypass
+                                            8. welcome-bypass 9. rule-accept
 """
 
 def show():
