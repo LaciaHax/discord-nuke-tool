@@ -9,6 +9,7 @@ from modules.emoji_mod import emoji_mod
 from modules.react_mod import add_emoji
 from modules.butotn_mod import button
 from modules.welcome_mod import welcome_mod
+from modules.member_mod import rule
 from colorama import Fore
 
 lists = [
@@ -20,6 +21,7 @@ lists = [
     add_emoji,
     button,
     welcome_mod,
+    rule,
 ]
 
 while True:
