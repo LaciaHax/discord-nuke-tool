@@ -47,3 +47,6 @@
 
 2024/5/29:
 - [+] rule accepter
+
+2024/6/10:
+- [+] group-spam
