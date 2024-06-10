@@ -50,6 +50,10 @@ def get_valid_channels(server_id, token):
         print(f"{RED}[-] Failed to get channel list.")
         return []
 
+def generate_random_number(l):
+    random_numbers = [random.randint(0, 9) for _ in range(l)]
+    return ''.join(map(str, random_numbers))
+
 def generate_random_string(length):
     letters_and_digits = string.ascii_letters + string.digits
     return ''.join(random.choice(letters_and_digits) for _ in range(length))
@@ -95,7 +99,7 @@ def send_messages(tokens, server_id):
     
     channel_id = input("チャンネルIDを入力してください > ")
 
-    wick_troll = input("Wick bypassをしますか？ (y/n)")
+    wick_troll = input("Wick bypassをしますか？ (y/n) > ")
     
     print(f"{BLUE}[INFO] fetch members....")
     attempt = 1
@@ -120,7 +124,8 @@ def send_messages(tokens, server_id):
             met = met_dict[token]
             while True:
                 for channel in channels:
-                    modified_message = re.sub(r"{rand-(\d+)}", lambda x: generate_random_string(int(x.group(1))), message)
+                    modified_message = re.sub(r"{randnum-(\d+)}", lambda x: generate_random_number(int(x.group(1))), message)
+                    modified_message = re.sub(r"{rand-(\d+)}", lambda x: generate_random_string(int(x.group(1))), modified_message)
                     modified_message = re.sub(r"{randjp-(\d+)}", lambda x: generate_random_hiragana(int(x.group(1))), modified_message)
                     modified_message = modified_message.replace("{ghost}", "||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||||||||||")
                     if wick_troll == "y":
@@ -166,7 +171,8 @@ def send_messages(tokens, server_id):
         def single_mode(token):
             met = met_dict[token]
             while True:
-                modified_message = re.sub(r"{rand-(\d+)}", lambda x: generate_random_string(int(x.group(1))), message)
+                modified_message = re.sub(r"{randnum-(\d+)}", lambda x: generate_random_number(int(x.group(1))), message)
+                modified_message = re.sub(r"{rand-(\d+)}", lambda x: generate_random_string(int(x.group(1))), modified_message)
                 modified_message = re.sub(r"{randjp-(\d+)}", lambda x: generate_random_hiragana(int(x.group(1))), modified_message)
                 modified_message = modified_message.replace("{ghost}", "||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||||||||||")
                 if wick_troll == "y":

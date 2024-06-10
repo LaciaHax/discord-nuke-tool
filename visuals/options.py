@@ -13,6 +13,7 @@ options = """
                                             4. Tokenchecker 5. Emoji spmam
                                             6. Reaction Adder 7. Buttonpush
                                             8. welcome-bypass 9. rule-accept
+                                            10. group-spam
 """
 
 def show():
